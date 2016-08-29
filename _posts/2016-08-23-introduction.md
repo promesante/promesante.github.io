@@ -1,5 +1,6 @@
 ---
 layout:     post
+comments:   true
 title:      "Introduction"
 subtitle:   "Let's get introduced !"
 date:       2016-07-16
