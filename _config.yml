@@ -1,0 +1,27 @@
+# Site settings
+title: Promesante
+header-img: img/09.jpg
+# header-img: img/cuesta-del-obispo-salta.jpg
+# email: your-email@yourdomain.com
+copyright_name: Promesante
+description: "Andando y andando, me vine hasta aquí (Wandering and wandering, I've got here)"
+baseurl: ""
+url: "http://promesante.github.io"
+repository: promesante/promesante.github.io
+twitter_username: _promesante
+github_username: promesante
+# facebook_username:  IronSummitMedia
+# email_username:  your-email@yourdomain.com
+
+# Google Analytics
+# To enable google analytics, uncomment below line with a valid Google Tracking ID
+# google_tracking_id:
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+paginate: 5
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+gems: [jekyll-paginate, jekyll-feed]

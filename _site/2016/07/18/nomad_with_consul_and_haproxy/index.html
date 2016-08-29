@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Andando y andando, me vine hasta aquí (Wandering and wandering, I've got here)">
+
+    <title>Nomad with Consul and HAProxy - Promesante</title>
+
+    <link rel="canonical" href="http://promesante.github.io/2016/07/18/nomad_with_consul_and_haproxy/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link type="application/atom+xml" rel="alternate" href="http://promesante.github.io/feed.xml" title="Promesante" />
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Promesante</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                
+				
+                <li>
+                    <a href="/about/">About</a>
+                </li>
+				
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Post Header -->
+<header class="intro-header" style="background-image: url('/img/02.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Nomad with Consul and HAProxy</h1>
+                    
+                    <h2 class="subheading">Putting HAProxy in front of a Nomad cluster in order to use it to run microservices on it</h2>
+                    
+                    <span class="meta">Posted by Promesante on July 18, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+				<h1 id="introduction">Introduction</h1>
+
+<p>For the reasons exposed in the previous post, I’ve begun exploring <a href="https://www.nomadproject.io/">Hashicorp’s Nomad</a>.</p>
+
+<p>I am mostly interested in long running services (microservices), and the most useful article I have found out about Nomad dealing with web apps is <a href="http://sysadvent.blogspot.com.ar/2015/12/day-12-introduction-to-nomad.html">Introducing cluster schedulers</a>. Unfortunately, this article does not consider any load balancer in front of them, which is mandatory in order to serve several instances of the same app / service. I was not then able to find out any article adding a load balancer in front of a Nomad cluster. But there were several combining Docker, Consul, Consul Template, Registrator, and Nginx or HAProxy.</p>
+
+<p>Among them, I’ve chosen <a href="http://fstn.hateblo.jp/entry/2014/10/26/153247">Consul Template and Registrator</a>, as its environment is configured and run by means of <a href="https://www.vagrantup.com/">Vagrant</a>, like the environment used in the target article on Nomad; it does not matter it’s written in Japanese, as we are currently interested just in a couple commands exposed there. <em>WARNING</em>: Google Translator capitalizes the first letter of every command…</p>
+
+<p>Basically, I have added the VM configured in the latter article, with an HAProxy load balancer, into the set configured in the former one.</p>
+
+<h1 id="explanation">Explanation</h1>
+
+<p>I will depict those configurations, but just providing the raw commands, as the whole explanation on them is supplied in those two excellent articles. Hence, I’d suggest taking a look at both of them before running the following tasks. Commands to run are shown below grouped in sections, each after which of these two articles they were taken from:</p>
+
+<h2 id="introducing-cluster-schedulers">Introducing cluster schedulers</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd nomad-intro
+vagrant up
+vagrant status
+vagrant ssh nomad
+nomad run /vagrant/microbot.nomad
+</code></pre>
+</div>
+
+<h2 id="consul-template-and-registrator">Consul Template and Registrator</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vagrant ssh haproxy1
+cat /etc/haproxy/haproxy.cfg
+</code></pre>
+</div>
+
+<p>HAProxy config file will then lack any entry at its very bottom for any Web app.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo consul-template\
+ -consul=10.7.0.15:8500\
+ -template=/vagrant/haproxy.ctmpl:/etc/haproxy/haproxy.cfg:"/etc/init.d/haproxy reload"
+
+cat /etc/haproxy/haproxy.cfg
+</code></pre>
+</div>
+
+<p>Now, HAProxy config file includes an entry for each of the nine Web apps started by Nomad in the three “Docker” nodes. And invoking <code class="highlighter-rouge">curl</code> succesively, it will show the different Docker container IDs; for example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl 10.7.0.31
+</code></pre>
+</div>
+
+<h2 id="introducing-cluster-schedulers-1">Introducing cluster schedulers</h2>
+
+<p>Open the <code class="highlighter-rouge">microbot.nomad</code> file with your favorite text editor and change the instance value from 9 to 50. Once you’re done, tell Nomad to about our changes by running:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>vagrant ssh nomad
+nomad run /vagrant/microbot.nomad
+</code></pre>
+</div>
+
+<h2 id="consul-template-and-registrator-1">Consul Template and Registrator</h2>
+
+<p>Hence, HAProxy config file includes an entry for each of these fifty Web apps started by Nomad in the three “Docker” nodes. And invoking <code class="highlighter-rouge">curl</code> succesively, it will show the different Docker container IDs, such as:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl 10.7.0.31
+</code></pre>
+</div>
+
+<p>You can check running services and their corresponding instances by means of Consul:</p>
+
+<p>List running services:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -s http://10.7.0.15:8500/v1/catalog/services
+</code></pre>
+</div>
+
+<p>List information about our <code class="highlighter-rouge">microbot</code> service:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -s http://10.7.0.15:8500/v1/catalog/service/microbot-web-microbot
+</code></pre>
+</div>
+
+<p>Or straight with the browser at:</p>
+
+<p><a href="http://10.7.0.15:8500/ui/">http://10.7.0.15:8500/ui/</a></p>
+
+<p>And that’s it !</p>
+
+<h1 id="next-steps">Next Steps</h1>
+
+<p>From this base config, I plan to explore in the near future the following paths, sharing the experience here with the corresponding articles:</p>
+
+<ul>
+  <li>Load balance with Nginx</li>
+  <li>Provision with Puppet</li>
+  <li>Deploy in AWS</li>
+</ul>
+
+<p>I hope this information to be useful for you ! And till next post !</p>
+
+
+                <hr>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/07/17/schedulers_with_optimistic_concurrency/" data-toggle="tooltip" data-placement="top" title="Schedulers with Optimistic Concurrency">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://twitter.com/_promesante">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="https://github.com/promesante">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Promesante 2016</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js "></script>
+
+
+    
+
+
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.2.1">Jekyll</generator><link href="http://promesante.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://promesante.github.io/" rel="alternate" type="text/html" /><updated>2016-08-25T18:58:50-03:00</updated><id>http://promesante.github.io/</id><title>Promesante</title><subtitle>Andando y andando, me vine hasta aquí (Wandering and wandering, I've got here)</subtitle><entry><title>Nomad with Consul and HAProxy</title><link href="http://promesante.github.io/2016/07/18/nomad_with_consul_and_haproxy/" rel="alternate" type="text/html" title="Nomad with Consul and HAProxy" /><published>2016-07-18T09:00:00-03:00</published><updated>2016-07-18T09:00:00-03:00</updated><id>http://promesante.github.io/2016/07/18/nomad_with_consul_and_haproxy</id><content type="html" xml:base="http://promesante.github.io/2016/07/18/nomad_with_consul_and_haproxy/">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;For the reasons exposed in the previous post, I’ve begun exploring &lt;a href=&quot;https://www.nomadproject.io/&quot;&gt;Hashicorp’s Nomad&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I am mostly interested in long running services (microservices), and the most useful article I have found out about Nomad dealing with web apps is &lt;a href=&quot;http://sysadvent.blogspot.com.ar/2015/12/day-12-introduction-to-nomad.html&quot;&gt;Introducing cluster schedulers&lt;/a&gt;. Unfortunately, this article does not consider any load balancer in front of them, which is mandatory in order to serve several instances of the same app / service. I was not then able to find out any article adding a load balancer in front of a Nomad cluster. But there were several combining Docker, Consul, Consul Template, Registrator, and Nginx or HAProxy.&lt;/p&gt;
+
+&lt;p&gt;Among them, I’ve chosen &lt;a href=&quot;http://fstn.hateblo.jp/entry/2014/10/26/153247&quot;&gt;Consul Template and Registrator&lt;/a&gt;, as its environment is configured and run by means of &lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt;, like the environment used in the target article on Nomad; it does not matter it’s written in Japanese, as we are currently interested just in a couple commands exposed there. &lt;em&gt;WARNING&lt;/em&gt;: Google Translator capitalizes the first letter of every command…&lt;/p&gt;
+
+&lt;p&gt;Basically, I have added the VM configured in the latter article, with an HAProxy load balancer, into the set configured in the former one.&lt;/p&gt;
+
+&lt;h1 id=&quot;explanation&quot;&gt;Explanation&lt;/h1&gt;
+
+&lt;p&gt;I will depict those configurations, but just providing the raw commands, as the whole explanation on them is supplied in those two excellent articles. Hence, I’d suggest taking a look at both of them before running the following tasks. Commands to run are shown below grouped in sections, each after which of these two articles they were taken from:&lt;/p&gt;
+
+&lt;h2 id=&quot;introducing-cluster-schedulers&quot;&gt;Introducing cluster schedulers&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd nomad-intro
+vagrant up
+vagrant status
+vagrant ssh nomad
+nomad run /vagrant/microbot.nomad
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;consul-template-and-registrator&quot;&gt;Consul Template and Registrator&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vagrant ssh haproxy1
+cat /etc/haproxy/haproxy.cfg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;HAProxy config file will then lack any entry at its very bottom for any Web app.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo consul-template\
+ -consul=10.7.0.15:8500\
+ -template=/vagrant/haproxy.ctmpl:/etc/haproxy/haproxy.cfg:&quot;/etc/init.d/haproxy reload&quot;
+
+cat /etc/haproxy/haproxy.cfg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now, HAProxy config file includes an entry for each of the nine Web apps started by Nomad in the three “Docker” nodes. And invoking &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt; succesively, it will show the different Docker container IDs; for example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl 10.7.0.31
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;introducing-cluster-schedulers-1&quot;&gt;Introducing cluster schedulers&lt;/h2&gt;
+
+&lt;p&gt;Open the &lt;code class=&quot;highlighter-rouge&quot;&gt;microbot.nomad&lt;/code&gt; file with your favorite text editor and change the instance value from 9 to 50. Once you’re done, tell Nomad to about our changes by running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vagrant ssh nomad
+nomad run /vagrant/microbot.nomad
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;consul-template-and-registrator-1&quot;&gt;Consul Template and Registrator&lt;/h2&gt;
+
+&lt;p&gt;Hence, HAProxy config file includes an entry for each of these fifty Web apps started by Nomad in the three “Docker” nodes. And invoking &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt; succesively, it will show the different Docker container IDs, such as:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl 10.7.0.31
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can check running services and their corresponding instances by means of Consul:&lt;/p&gt;
+
+&lt;p&gt;List running services:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -s http://10.7.0.15:8500/v1/catalog/services
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;List information about our &lt;code class=&quot;highlighter-rouge&quot;&gt;microbot&lt;/code&gt; service:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -s http://10.7.0.15:8500/v1/catalog/service/microbot-web-microbot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Or straight with the browser at:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://10.7.0.15:8500/ui/&quot;&gt;http://10.7.0.15:8500/ui/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And that’s it !&lt;/p&gt;
+
+&lt;h1 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h1&gt;
+
+&lt;p&gt;From this base config, I plan to explore in the near future the following paths, sharing the experience here with the corresponding articles:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Load balance with Nginx&lt;/li&gt;
+  &lt;li&gt;Provision with Puppet&lt;/li&gt;
+  &lt;li&gt;Deploy in AWS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I hope this information to be useful for you ! And till next post !&lt;/p&gt;</content><author><name>Promesante</name></author><summary>Introduction</summary></entry><entry><title>Schedulers with Optimistic Concurrency</title><link href="http://promesante.github.io/2016/07/17/schedulers_with_optimistic_concurrency/" rel="alternate" type="text/html" title="Schedulers with Optimistic Concurrency" /><published>2016-07-17T00:00:00-03:00</published><updated>2016-07-17T00:00:00-03:00</updated><id>http://promesante.github.io/2016/07/17/schedulers_with_optimistic_concurrency</id><content type="html" xml:base="http://promesante.github.io/2016/07/17/schedulers_with_optimistic_concurrency/">&lt;p&gt;For the development of the eCommerce platform for &lt;a href=&quot;https://www.garbarino.com/&quot;&gt;Garbarino.com&lt;/a&gt;, Argentina’s largest home appliance retailer chain, we have fully embraced &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;. Hence, I have studied about it, mainly Karl Matthias’ excellent &lt;a href=&quot;http://www.amazon.com/Docker-Up-Running-Karl-Matthias/dp/1491917571&quot;&gt;Docker: Up and Running&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In its chapter on “The Path to Production Containers”, Karl states:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;At DockerCon EU, December 2014, Solomon Hykes, founder and CEO of dotCloud, described Apache Mesos as &lt;a href=&quot;https://www.youtube.com/watch?v=sGWQ8WiGN8Y&amp;amp;feature=youtu.be&amp;amp;t=35m10s&quot;&gt;the gold standard for clustered containers&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Of course, I began studying it, with another excellent book: Dharmesh Kakadia’s &lt;a href=&quot;http://www.amazon.com/Apache-Mesos-Essentials-Dharmesh-Kakadia/dp/1783288760/&quot;&gt;Apache Mesos Essentials&lt;/a&gt;. Mainly, its chapter on “Running Services on Mesos”. And then began playing with &lt;a href=&quot;https://mesosphere.github.io/marathon/&quot;&gt;Mesosphere Marathon&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then, I stumbled upon “optimistic concurrency”:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://static.googleusercontent.com/media/research.google.com/es//pubs/archive/41684.pdf&quot;&gt;Omega: flexible, scalable schedulers for large compute clusters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://kunaltalwar.org/papers/quincy-sosp09.pdf&quot;&gt;Quincy: Fair Scheduling for Distributed Computing Clusters&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And about open source schedulers designed thay way, whereas Mesos currently implementing pessimistic concurrency:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nomadproject.io/&quot;&gt;Hashicorp’s Nomad&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.firmament.io/&quot;&gt;Firmament&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’ve begun exploring Nomad: in upcoming posts, I will share findings under way.&lt;/p&gt;
+
+&lt;p&gt;Till then !&lt;/p&gt;</content><author><name>Promesante</name></author><summary>For the development of the eCommerce platform for Garbarino.com, Argentina’s largest home appliance retailer chain, we have fully embraced Docker. Hence, I have studied about it, mainly Karl Matthias’ excellent Docker: Up and Running.</summary></entry><entry><title>Introduction</title><link href="http://promesante.github.io/2016/07/16/introduction/" rel="alternate" type="text/html" title="Introduction" /><published>2016-07-16T00:00:00-03:00</published><updated>2016-07-16T00:00:00-03:00</updated><id>http://promesante.github.io/2016/07/16/introduction</id><content type="html" xml:base="http://promesante.github.io/2016/07/16/introduction/">&lt;p&gt;In the first post of this blog, let’s get introduced.&lt;/p&gt;
+
+&lt;p&gt;My name is Luis M. Rosso.&lt;/p&gt;
+
+&lt;p&gt;I am Industrial Engineer and hold an MBA. But my career, and actual interests depicted below, have driven me into Information Technology, getting a so called &lt;em&gt;T profile&lt;/em&gt;: a &lt;em&gt;horizontal/generalist one&lt;/em&gt; complemented with a &lt;em&gt;vertical/specialist one&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;I have always been very fond of intellectual exploration. Quite wide during my infancy and adolescence: Popular Science, Religion, History, Philosophy… And then, narrower and narrower. As I entered into the Computer Science realm, I’ve followed the same path: intellectual exploration. Naturally, again, wide at the beginning, and then narrower and narrower, gradually converging into the subjects listed below, and getting as practical, and hopefully useful, as to begin sharing findings here.&lt;/p&gt;
+
+&lt;p&gt;This passion for intellectual exploration is the reason why I’ve chosen this blog’s motto:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Andando y andando, me vine hasta aquí”…
+(“Wandering and wandering, I’ve got here”)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I’ve taken it from one of my favorite songs which, in turn, this blog takes its name after:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=NeRb39bObgM&amp;amp;t=41m11s&quot;&gt;El Promesante&lt;/a&gt;, by &lt;a href=&quot;https://en.wikipedia.org/wiki/Atahualpa_Yupanqui&quot;&gt;Atahualpa Yupanqui&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;interests&quot;&gt;Interests&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Functional Programming Paradigm&lt;/li&gt;
+  &lt;li&gt;Meta-programming&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The common denominator is Lisp programming language, as it approaches natively both those broad subjects. Actually, Lisp, rather than a single programming language, is a large, diverse family of dialects. Among them, for the reasons explained below, I am particularly interested in the following ones:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://clojure.org&quot;&gt;Clojure&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://racket-lang.org&quot;&gt;Racket&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A detailed list of these interests is shown in the &lt;em&gt;About&lt;/em&gt; section. It will be kept up-to-date, reflecting its permantent changes and evolution.&lt;/p&gt;
+
+&lt;h1 id=&quot;approach&quot;&gt;Approach&lt;/h1&gt;
+
+&lt;p&gt;My goal is to build core competencies based on these  broad interests. But not alone: I’d rather do it collaboratively with people with complementary interests and skills, and hopefully team up with them to build nice, useful pieces of software:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Learn by doing&lt;/li&gt;
+  &lt;li&gt;Share what I learn&lt;/li&gt;
+  &lt;li&gt;Team up by sharing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hence, I am setting this blog as a means for these goals.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;I know these interests are perhaps too wide and disperse. However, I have always tried to keep balance between their unity and diversity, in order to get synergy from their combination. Of cource, I don’t plan to either get hands-on experience or publish posts on all of them. But what I actually do about them all is studying, and permanently evaluating which one to invest time and effort on, getting the hands gradually dirty on the most promising ones, at least from my point of view…&lt;/p&gt;
+
+&lt;p&gt;Only these cases will be published as posts: just original, practical experiences. I hope them to be interesting and useful for you. And your comments are more than welcome: actually, the whole blog is just an excuse to initiate a conversation.&lt;/p&gt;
+
+&lt;p&gt;So, welcome ! And keep updated !&lt;/p&gt;</content><author><name>Promesante</name></author><summary>In the first post of this blog, let’s get introduced.</summary></entry></feed>
