@@ -8,6 +8,7 @@ description: "Andando y andando, me vine hasta aquí (Wandering and wandering, I
 baseurl: ""
 url: "http://promesante.github.io"
 repository: promesante/promesante.github.io
+safe: true
 twitter_username: _promesante
 github_username: promesante
 # facebook_username:  IronSummitMedia
