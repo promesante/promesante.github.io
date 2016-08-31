@@ -3,7 +3,7 @@ layout:     post
 comments:   true
 title:      "Nomad with Consul and HAProxy"
 subtitle:   "Putting HAProxy in front of a Nomad cluster in order to use it to run microservices on it"
-date:       2016-07-18 12:00:00
+date:       2016-08-31
 author:     "Promesante"
 header-img: "img/02.jpg"
 ---
@@ -12,7 +12,14 @@ header-img: "img/02.jpg"
 
 For the reasons exposed in the previous post, I've begun exploring [Hashicorp's Nomad](https://www.nomadproject.io/).
 
-I am mostly interested in long running services (microservices), and the most useful article I have found out about Nomad dealing with web apps is [Introducing cluster schedulers](http://sysadvent.blogspot.com.ar/2015/12/day-12-introduction-to-nomad.html). Unfortunately, this article does not consider any load balancer in front of them, which is mandatory in order to serve several instances of the same app / service. I was not then able to find out any article adding a load balancer in front of a Nomad cluster. But there were several combining Docker, Consul, Consul Template, Registrator, and Nginx or HAProxy.
+I am mostly interested in long running services (microservices), and the most useful article I have found out about Nomad dealing with web apps is [Introducing cluster schedulers](http://sysadvent.blogspot.com.ar/2015/12/day-12-introduction-to-nomad.html). Unfortunately, this article does not consider any load balancer in front of them, which is mandatory in order to serve several instances of the same app / service. I was not then able to find out any article adding a load balancer in front of a Nomad cluster, but several combining Docker, Consul, Consul Template, Registrator, and Nginx or HAProxy, listed below:
+
+* [Service discovery with consul and consul-template](http://agiletesting.blogspot.com.ar/2014/11/service-discovery-with-consul-and.html)
+* [Automatic container registration with Consul and Registrator](https://jlordiales.me/2015/02/03/registrator/)
+* [Where are my containers? Dockerized service discovery with Consul](https://jlordiales.me/2015/01/23/docker-consul/)
+* [Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx](http://www.maori.geek.nz/scalable_architecture_dr_con_docker_registrator_consul_nginx/)
+* [Using HAProxy and Consul for dynamic service discovery on Docker](http://sirile.github.io/2015/05/18/using-haproxy-and-consul-for-dynamic-service-discovery-on-docker.html)
+* [Load-balancing Docker containers with Nginx and Consul-Template](https://tech.bellycard.com/blog/load-balancing-docker-containers-with-nginx-and-consul-template/)
 
 Among them, I've chosen [Consul Template and Registrator](http://fstn.hateblo.jp/entry/2014/10/26/153247), as its environment is configured and run by means of [Vagrant](https://www.vagrantup.com/), like the environment used in the target article on Nomad; it does not matter it's written in Japanese, as we are currently interested just in a couple commands exposed there. *WARNING*: Google Translator capitalizes the first letter of every command...
 

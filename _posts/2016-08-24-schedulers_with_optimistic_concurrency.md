@@ -3,7 +3,7 @@ layout:     post
 comments:   true
 title:      "Schedulers with Optimistic Concurrency"
 subtitle:   "Evaluating schedulers for microservices"
-date:       2016-07-17
+date:       2016-08-31
 author:     "Promesante"
 header-img: "img/siete-colores.jpg"
 ---
