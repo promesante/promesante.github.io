@@ -16,8 +16,8 @@ github_username: promesante
 
 # Google Analytics
 # To enable google analytics, uncomment below line with a valid Google Tracking ID
-# google_tracking_id:
-google_analytics: UA-83363173-1
+google_tracking_id: UA-83363173-1
+# google_analytics: UA-83363173-1
 
 # Build settings
 markdown: kramdown
