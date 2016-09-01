@@ -3,7 +3,7 @@ layout:     post
 comments:   true
 title:      "Introduction"
 subtitle:   "Let's get introduced !"
-date:       2016-08-31
+date:       2016-08-29
 author:     "Promesante"
 header-img: "img/salinas.jpg"
 ---

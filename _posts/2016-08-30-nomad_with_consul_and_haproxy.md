@@ -3,7 +3,7 @@ layout:     post
 comments:   true
 title:      "Nomad with Consul and HAProxy"
 subtitle:   "Putting HAProxy in front of a Nomad cluster in order to use it to run microservices on it"
-date:       2016-08-31
+date:       2016-08-30
 author:     "Promesante"
 header-img: "img/02.jpg"
 ---
