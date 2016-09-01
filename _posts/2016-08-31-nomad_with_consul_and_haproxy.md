@@ -106,7 +106,8 @@ And that's it !
 From this base config, I plan to explore in the near future the following paths, sharing the experience here with the corresponding articles:
 
 * Load balance with Nginx
-* Provision with Puppet
-* Deploy in AWS
+* Provision with [Puppet](https://puppet.com/)
+* Deploy in AWS with [Amazonica](https://github.com/mcohen01/amazonica)
+* Monitor it with [Riemann](http://riemann.io/)
 
 I hope this information to be useful for you ! And till next post !
