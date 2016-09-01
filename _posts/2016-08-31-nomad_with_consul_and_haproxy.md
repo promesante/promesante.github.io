@@ -25,6 +25,8 @@ Among them, I've chosen [Consul Template and Registrator](http://fstn.hateblo.jp
 
 Basically, I have added the VM configured in the latter article, with an HAProxy load balancer, into the set configured in the former one.
 
+Source code available at [repo](https://github.com/promesante/nomad-intro)
+
 # Explanation
 
 I will depict those configurations, but just providing the raw commands, as the whole explanation on them is supplied in those two excellent articles. Hence, I'd suggest taking a look at both of them before running the following tasks. Commands to run are shown below grouped in sections, each after which of these two articles they were taken from:
