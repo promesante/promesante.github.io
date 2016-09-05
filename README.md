@@ -1,5 +1,6 @@
 # promesante.github.io
-Promesante's Blog
+
+# [Promesante's Blog](http://promesante.github.io)
 
 I am actively building professional core competences on:
 
@@ -16,8 +17,8 @@ I am building them in a hands-on fashion. I hope to go on more and more collabor
 Hence, I'd summarize this approach as:
 
 * Learn by doing
-* Share what I learn: *posts*
-* Team up by sharing: *comments* as a conversation
+* Share what I learn: **posts**
+* Team up by sharing: **comments** as a conversation
 
 Just original, practical experiences will be published. I hope them to be interesting and useful for you. And your comments are more than welcome: actually, the whole blog is just an excuse to initiate a conversation.
 
