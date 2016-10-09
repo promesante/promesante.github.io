@@ -25,6 +25,6 @@ In the latter case, you can run the script by means of the Node.js, as shown bel
 > node driver.js
 ```
 
-My next step here will be similar, but based on another, slightly more sophisticated example, among the supplied with Urlang; most likely, [the one]() interoperating with [Ractive](http://www.ractivejs.org/).
+My next step here will be similar, but based on another, slightly more sophisticated example, among the supplied with Urlang; most likely, [the one](https://github.com/soegaard/urlang/tree/master/urlang-examples/ractive) interoperating with [Ractive](http://www.ractivejs.org/).
 
 Till then !
