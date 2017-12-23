@@ -14,7 +14,7 @@ header-img: "img/f6d9753217.jpg"
 
 As laid out in my [previous post]({% post_url 2017-10-12-porting_paips_prolog_interpreter_from_common_lisp_to_racket %}), I am porting from Common Lisp to Racket the Prolog interpreter exposed in Peter Norvig's classic text, [Paradigms of Artificial Intelligence Programming: Case Studies in Common Lisp 1st Edition](https://www.amazon.com/Paradigms-Artificial-Intelligence-Programming-Studies/dp/1558601910/ref=sr_1_1?s=books&ie=UTF8&qid=1506786797&sr=1-1&keywords=paradigms+of+artificial+intelligence+programming), also known as PAIP, in its chapter 11.
 
-This second post covers interpreter's second version, exposed in sections 11.3 though 11.5. And, as the first post, it focuses on its port, from its original implementation in Common Lisp, to Racket, in the main differences between its implementation in each of these Lisp dialects.
+This second post covers interpreter's second version, exposed in sections 11.3 though 11.5. And, as the first post, it focuses on its port, from its original implementation in Common Lisp, to Racket, in the main differences between its implementation in each of these Lisp dialects. Hence, for every modification, we will compare below the initial version under the title _Section 11.2_, with the new one, under _Section 11.3_, in their original implementation, in Common Lisp. Code ported to Racket will be exposed under this section as well.
 
 Source code available in my [GitHub](https://github.com/) [repo](https://github.com/promesante/paip-racket), branch `section-11.3`.
 
@@ -23,17 +23,17 @@ Source code available in my [GitHub](https://github.com/) [repo](https://github.
 
 ## Automatic Backtracking ##
 
-The first version of the interpreter, exposed in the previous post, for every query, returns all the solutions at once, in a manner PAIP calls "batch approach". On the other hand, its second version, exposed in this post, for every query returns one solution at a time, as they are found, as usual in real Prolog interpreters: PAIP calls this approach "incremental".
+The first version of the interpreter, exposed in the previous post, for every query, returns all the solutions at once, in a manner PAIP calls "batch approach". On the other hand, its second version, about to be exposed here, for every query returns one solution at a time, as they are found, as usual in real Prolog interpreters: PAIP calls this approach "incremental".
 
 In order to implement it, PAIP uses a specific goal which "extends every query to print out the variables, and ask the user if the computation should be continued". This is a new type of goal, which is independent of the database but "causes a procedure to take action. In Prolog, such procedures are called `primitives`, because they are built-in to the language".
 
-The first, actually unique `primitive` procedure included in the interpreter's new version exposed in section 11.3, `show-prolog-vars`, appears in `top-level-prove` function, which is directly by query operator.
+The first, actually unique `primitive` procedure included in this new version, `show-prolog-vars`, appears in `top-level-prove` function, which is directly by query operator.
 
-For every modification made to the interpreter's new version, we will compare below the initial version, shown in PAIP's 11.2 section, with the new one, shown in turn in section 11.3, in their original implementation, in Common Lisp:
 
 ---
 
 ### Section 11.2 ###
+
 
 ```cl
 (defun top-level-prove (goals)
@@ -55,7 +55,7 @@ For every modification made to the interpreter's new version, we will compare be
   (values))
 ```
 
-As mentioned above, primitive `show-prolog-vars` is left to the very end of the list of goals.
+As mentioned above, `primitive show-prolog-vars` is left to the very end of the list of goals.
 
 And then, its port to Racket:
 
@@ -172,8 +172,6 @@ For `primitives` to be picked by the `if` condition in previous snippet, the cor
 (setf (get 'show-prolog-vars 'clauses) 'show-prolog-vars)
 ``` 
 
-This last `funcall` invokes `primitives`.
-
 And then, its port to Racket:
 
 ```scheme
@@ -231,7 +229,7 @@ And then, its port to Racket:
       (prove-all other-goals bindings)))
 ``` 
 
-And the following predicate, referenced from `show-prolog-vars` function, was added in section 11.3:
+And the following predicate, referenced from `show-prolog-vars` function above, is added in section 11.3:
 
 ```cl
 (defun continue-p ()
@@ -259,7 +257,11 @@ And then, its port to Racket:
      (continue?))))
 ``` 
 
+---
+
 ### Test Cases ###
+
+This are the usage examples given in PAIP, along with the result got in its port to Racket which, in turn, matches the result given in PAIP:
 
 ```scheme
 > (<- (member ?item (?item . ?rest)))
@@ -286,7 +288,7 @@ No.
 
 ## Anonymous Variables ##
 
-This kind of variable denote the ones which are not relevant, denoted by `?`. In the following example: `?x`.
+This kind of variable denote the ones which are not relevant, represented with a question mark, `?`. In the following example, variable`?x` used in the first two expressions below, are replaced by an anonymous variable in the subsequent two:
 
 ```scheme
 (<- (member ?item (?item . ?rest)))
@@ -417,6 +419,37 @@ This is the final example given PAIP: a logic game.
 ?water-drinker = norwegian
 ?houses = ((house norwegian fox kools water ye1low) (house ukrainian horse chesterfield tea blue) (house englishman snails winston milk red) (house spaniard dog luckystrike orange-juice ivory) (house japanese zebra parliaments coffee green));
 No.
+```
+
+---
+
+## Porting Common Lisp primitive functions to Racket ##
+
+In previous post, under this same title, "a couple Common Lisp primitive functions had to be re-implemented in Racket, in order to alter the least PAIP’s functions using them: `sublis` and `adjoin`. While porting this second version of the interpreter, I realized `sublis` handled just `lists`, whereas it had to handle `pairs` as well.
+
+Hence, a new version with this new functionality was developed:
+
+```scheme
+(define (sublis pairs lst)
+  (map (lambda (elem)
+         (process pairs elem))
+       lst))
+
+(define (process pairs elem)
+  (cond ((list? elem) (sublis pairs elem))
+        ((pair? elem) (subpair pairs elem))
+        (else (subelem pairs elem))))
+
+(define (subpair pairs pair)
+  (cons (process pairs (car pair)) (process pairs (cdr pair))))
+
+(define (subelem pairs elem)
+  (let ((mem-pairs (memf (lambda (pair)
+                           (equal? elem (car pair)))
+                         pairs)))
+    (if (not mem-pairs)
+        elem
+        (cdr (car mem-pairs)))))
 ```
 
 And that's all by now...
