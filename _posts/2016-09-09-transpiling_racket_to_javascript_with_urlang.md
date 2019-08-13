@@ -5,7 +5,7 @@ title:      "Transpiling Racket to Javascript with Urlang"
 subtitle:   "Coding examples"
 date:       2016-09-09
 author:     "Promesante"
-header-img: "img/laguna-verde-3-0x0.jpg"
+background: "/img/posts/04.jpg"
 ---
 # Urlang Examples
 

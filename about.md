@@ -2,9 +2,9 @@
 layout:        page
 title:         "About"
 description:   "Andando y andando, me vine hasta aquí..."
-date:          2016-07-14
+date:          2019-08-13
 author:        "Promesante"
-header-img:    "img/04.jpg"
+background:    "/img/bg-about.jpg"
 ---
 
 My name is Luis M. Rosso.

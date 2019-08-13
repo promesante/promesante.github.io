@@ -5,7 +5,7 @@ title:      "Schedulers with Optimistic Concurrency"
 subtitle:   "Evaluating schedulers for microservices"
 date:       2016-08-30
 author:     "Promesante"
-header-img: "img/siete-colores.jpg"
+background: "/img/posts/02.jpg"
 ---
 
 For the development of the eCommerce platform for [Garbarino.com](https://www.garbarino.com/), Argentina's largest home appliance retailer chain, we have fully embraced [Docker](https://www.docker.com/). Hence, I have studied about it, mainly Karl Matthias' excellent [Docker: Up and Running](http://www.amazon.com/Docker-Up-Running-Karl-Matthias/dp/1491917571).

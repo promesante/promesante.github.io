@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 {% include head.html %}
 
 <body>
 
-    {% include nav.html %}
+  {% include navbar.html %}
 
-    {{ content }}
+  {{ content }}
 
-    {% include footer.html %}
+  {% include footer.html %}
 
-    {% if jekyll.environment == 'production' %}
-    {% include ga.html %}
-    {% endif %}
+  {% include scripts.html %}
+
+  {% include google-analytics.html %}
 
 </body>
 

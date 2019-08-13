@@ -5,7 +5,7 @@ title:      "Porting PAIP's Prolog interpreter from Common Lisp to Racket"
 subtitle:   "Porting interpreter's first version shown in PAIP"
 date:       2017-10-12
 author:     "Promesante"
-header-img: "img/f6d9753217.jpg"
+background: "/img/posts/07.jpg"
 ---
 
 # Porting PAIP's Prolog interpreter from Common Lisp to Racket #

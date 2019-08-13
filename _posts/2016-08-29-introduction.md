@@ -5,7 +5,7 @@ title:      "Introduction"
 subtitle:   "Let's get introduced !"
 date:       2016-08-29
 author:     "Promesante"
-header-img: "img/salinas.jpg"
+background: '/img/posts/01.jpg'
 ---
 
 In the first post of this blog, let's get introduced.

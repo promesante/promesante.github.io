@@ -5,7 +5,7 @@ title:      "Transpiling Racket to Javascript with Urlang"
 subtitle:   "Ractive Tutorial"
 date:       2016-10-09
 author:     "Promesante"
-header-img: "img/palmar.jpg"
+background: "/img/posts/06.jpg"
 ---
 # Porting Ractive Tutorial from Javascript into Urlang
 
