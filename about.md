@@ -1,7 +1,7 @@
 ---
 layout:        page
 title:         "About"
-description:   "Andando y andando, me vine hasta aquí..."
+description:  "\"Andando y andando, me vine hasta aquí...<br/> (Wandering and wandering, I've got here)\"<br/>El Promesante, Atahualpa Yupanqui"
 date:          2019-08-13
 author:        "Promesante"
 background:    "/img/bg-about.jpg"
