@@ -6,21 +6,23 @@ baseurl:            ""
 url:                "http://promesante.github.io"
 
 # Social Profiles
-twitter_username: _promesante
-github_username: promesante
-linkedin_username: luis-m-rosso-aba9274
-# github_username:    BlackrockDigital
-# facebook_username:  StartBootstrap
-# linkedin_username:
+twitter_username:   _promesante
+github_username:    promesante
+linkedin_username:  luis-m-rosso-aba9274
 
 # Add your google-analytics ID here to activate google analytics
 google_analytics:   UA-83363173-1 # out your google-analytics code
 
 # Build settings
 markdown:           kramdown
+highlighter:        rouge
 paginate:           5
 paginate_path:      "/posts/page:num/"
 plugins:
   - jekyll-feed
   - jekyll-paginate
   - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
