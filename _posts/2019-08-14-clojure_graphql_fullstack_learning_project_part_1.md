@@ -10,10 +10,27 @@ background: "/img/posts/09.jpg"
 
 # Clojure GraphQL Fullstack Learning Project #
 
-Porting ["The Fullstack Tutorial for GraphQL"](https://www.howtographql.com), from Javascript to Clojure(script).
+Since my last post, about a year and a half ago, I have been putting into practice what I had already studied about Clojure, with the hope to have the chance of coding full time in a Lisp dialect, instead of just in a tiny fraction of my spare time. With Clojure, that does not seem so unlikely...
 
-I have tried to match each of the articles in the series in the git commit sequence, and the description given to each of them.
+In my job, I had to code a back-office application as a proof of concept to learn and evaluate GraphQL. In order to perform that, I had to make some research to explore that ecosystem, and try to find out a good tutorial: in my personal experience, investing time trying to find out better learning resources before getting my hands dirty has generally paid off...
 
+The best resource I found then out was definitely [The Fullstack Tutorial for GraphQL](https://www.howtographql.com).
+
+I performed a similar research in the Clojure/script ecosystem, but had not found out any fullstack demo, so porting [The Fullstack Tutorial for GraphQL](https://www.howtographql.com) from Javascript to Clojure/script, and then share that experience seemed quite interesting for me, and even hopefully useful for other people as well.
+
+Precisely that is what I am about to share here, as the first part of a series of blog posts. Source code is available in [my GitHub repo](https://github.com/promesante/hn-clj-pedestal-re-frame). I have tried to match each of the articles in the series in the git commit sequence, and the description given to each of them.
+
+
+## References ##
+
+* Port source: ["The Fullstack Tutorial for GraphQL"](https://www.howtographql.com)
+* Port target
+  - Back-end: [Lacinia Pedestal Tutorial](https://lacinia.readthedocs.io/en/latest/tutorial/)
+  - Front-end:
+    * [re-frame docs](https://github.com/Day8/re-frame/blob/master/docs/README.md)
+	* [re-frame tutorial](https://purelyfunctional.tv/guide/re-frame-building-blocks/)
+
+This post, as well as the rest of the series, assume having read these reference documents.
 
 ## Setup
 
@@ -21,7 +38,7 @@ I have tried to match each of the articles in the series in the git commit seque
 
 Database engine used is Postgresql.
 
-Database setup is performed by setup-db.sh script in the bin directory:
+Database setup is performed by `setup-db.sh` script in the `bin` directory:
 
 ```
 $ ./setup-db.sh
@@ -74,14 +91,14 @@ In order to implement GraphQL subscriptions, I've had the following to issues:
   * [Subscription to Lacinia Pedestal back end: Getting just the first event][re-graph-issue1]
   * [Queries and Mutations: websockets or HTTP?][re-graph-issue2]
 
-To be able to go on, for each of them, I've implemented the workarounds depicted in the issues just above, and shared them in my own [fork][re-graph-fork] of re-graph. In this fork, each of those workarounds has its own commit. Hence, re-graph dependency in this project references this fork. As its JAR file is not available online, in order to have this dependency resolved, this fork should be cloned and installed locally, running `lein install` in the cloned fork's root directory.
+To be able to go on, for each of them, I've implemented the workarounds depicted in those issues, and shared in my own [fork][re-graph-fork] of re-graph. In this fork, each of those workarounds has its own commit. Hence, re-graph dependency in this project references this fork. As its JAR file is not available online, in order to have this dependency resolved, this fork should be cloned and installed locally, running `lein install` in the cloned fork's root directory.
 
 
 ### GraphiQL ###
 
 On the server side, ["The Fullstack Tutorial for GraphQL"](https://www.howtographql.com) is based on [graphql-yoga](https://github.com/prisma/graphql-yoga) which, in turn, comes with [GraphQL Playground](https://github.com/prisma/graphql-playground) out of the box, as its “GraphQL IDE”.
 
-On the other hand, [Lacinia Pedestal](https://github.com/walmartlabs/lacinia-pedestal) comes with [GraphiQL](https://github.com/graphql/graphiql).
+On the other hand, [Lacinia Pedestal](https://github.com/walmartlabs/lacinia-pedestal) comes with [GraphiQL](https://github.com/graphql/graphiql). So, we will use GraphiQL.
 
 When you need to access queries or mutations which require the user to be authenticated, whereas [GraphQL Playground](https://github.com/prisma/graphql-playground) lets you set the corresponding token in the IDE, [GraphiQL](https://github.com/graphql/graphiql) takes it as a configuration.
 
@@ -194,6 +211,75 @@ user=> (quit)
 Bye for now!
 ```
 
+## Usage ##
+
+The only not obvious functionalities are the ones implemented by means of GraphQL subscriptions:
+
+* new link submitted
+* voting an already existing link
+
+Those events are notified to every client by means of a GraphQL subscription.
+
+You can replicate these cases by means of GraphiQL, the GraphQL IDE supplied out of the box with Lacinia Pedestal, mentioned above, in the Setup section.
+
+You can access the back-end from two different tabs in your browser:
+
+* the application: `http://localhost:8888`
+* GraphiQL: `http://localhost:8888/graphiql`
+
+The latter should have been setup as depicted above. You can get the token mentioned there for configuration in the application: as you signup a new user, or login, in the browser's developer tools -> Application -> Local Storage -> "token" entry.
+
+A couple seconds after running each of these mutations in GraphiQL, the new link or vote will appear in the Hacker News application.
+
+GraphQL mutations:
+
+New Link:
+
+```graphql
+mutation post($url:String!, $description:String!) {
+    post(
+      url: $url,
+      description: $description
+    ) {
+      id
+    }
+  }
+```
+
+Parameters:
+
+```json
+{
+  "url": "https://simulacrum.party/posts/the-mutable-web/",
+  "description": "The Mutable Web"
+}
+```
+
+Vote:
+
+```graphql
+mutation vote($link_id:ID!) {
+    vote(
+      link_id: $link_id
+    ) {
+      id
+    }
+  }
+```
+  
+Parameter:
+
+```json
+{
+  "link_id": 2
+}
+```
+
+## Conclusions ##
+
+In subsequent posts, I will explain this project's implementation, in a similar mannerand structure as the one sketched up in [The Fullstack Tutorial for GraphQL](https://www.howtographql.com).
+
+So... stay tuned !
 
 
 [re-graph]: https://github.com/oliyh/re-graph "re-graph"
