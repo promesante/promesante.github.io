@@ -16,9 +16,11 @@ In my job, I had to code a back-office application as a proof of concept to lear
 
 The best resource I found then out was definitely [The Fullstack Tutorial for GraphQL](https://www.howtographql.com).
 
-I performed a similar research in the Clojure/script ecosystem, but had not found out any fullstack demo, so porting [The Fullstack Tutorial for GraphQL](https://www.howtographql.com) from Javascript to Clojure/script, and then share that experience seemed quite interesting for me, and even hopefully useful for other people as well.
+In my spare time, I performed a similar research in the Clojure/script ecosystem, but had not then found out any fullstack demo, so porting [The Fullstack Tutorial for GraphQL](https://www.howtographql.com) from Javascript to Clojure/script, and then share that experience, seemed quite interesting for me, and even hopefully useful for other people as well.
 
-Precisely that is what I am about to share here, as the first part of a series of blog posts. Source code is available in [my GitHub repo](https://github.com/promesante/hn-clj-pedestal-re-frame). I have tried to match each of the articles in the series in the git commit sequence, and the description given to each of them.
+Precisely that is what I am about to share here, as the first part of a series of posts. Source code is available in [my GitHub repo](https://github.com/promesante/hn-clj-pedestal-re-frame). I have tried to match each of the articles in [The Fullstack Tutorial for GraphQL](https://www.howtographql.com) series in the git commit sequence, and the description given to each of them.
+
+Of course, suggestions, corrections or enhancements are more than welcome.
 
 
 ## References ##
