@@ -279,7 +279,7 @@ Parameter:
 
 ## Conclusions ##
 
-In subsequent posts, I will explain this project's implementation, in a similar mannerand structure as the one sketched up in [The Fullstack Tutorial for GraphQL](https://www.howtographql.com).
+In subsequent posts, I will explain this project's implementation, in a similar manner and structure as the one sketched up in [The Fullstack Tutorial for GraphQL](https://www.howtographql.com).
 
 So... stay tuned !
 
