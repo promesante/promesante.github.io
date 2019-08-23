@@ -172,6 +172,14 @@ dev:cljs.user=>
 
 * Back-end:
 
+If you have not started Postgresql yet:
+
+```
+$ pg_ctl -D /usr/local/var/postgres start
+```
+
+And then:
+
 ```
 $ lein repl
 Retrieving cider/piggieback/0.4.0/piggieback-0.4.0.pom from clojars
@@ -212,6 +220,13 @@ user=> (stop)
 user=> (quit)
 Bye for now!
 ```
+
+You could shut down Postgresql as well:
+
+```
+$ pg_ctl -D /usr/local/var/postgres stop
+```
+
 
 ## Usage ##
 
