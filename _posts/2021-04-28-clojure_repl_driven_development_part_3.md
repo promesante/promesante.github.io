@@ -117,11 +117,11 @@ accounts.web.interceptors.validate-test>
 
 Then, we can run single set of test cases: with the cursor put in `let`'s enclosing parenthesis, press `C-x C-e`, as shown below:
 
-![test-case-2](/img/posts/test-case.png)
+![test-cases](/img/posts/test-cases.png)
 
 Or a single test case as well. But, in this case, expressions in `let` cannot been run, so they must be replaced by a `def`, as shown below:
 
-![test-case](/img/posts/test-case-2.png)
+![test-cases-2](/img/posts/test-cases-2.png)
 
 PR corresponding to this RDD demo is available [here](https://github.com/promesante/accounts-api/pull/19/files).
 
