@@ -8,44 +8,46 @@ author:     "Promesante"
 background: "/img/posts/14.jpg"
 ---
 
-[Previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}) of this series left us ready to begin actual implementation of our toy digital bank, as an attempt to get first hand experience in Clojure REPL driven development (RDD), tackling its first endpoint, **account view**.
+[Previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}) of this series left us ready to begin actual implementation of our toy digital bank, as an attempt to **get first hand experience in Clojure REPL driven development (RDD)**, tackling the first endpoint in our implementation strategy: **account view**.
 
 ---
 # Database #
 
 Implemented in the following [PR](https://github.com/promesante/accounts-api/pull/2/files).
 
-Assuming you have already read both tutorials on Datomic mentioned in [Previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}), section "References", this PR wouldn't demand any further explanation.
+Assuming you have already read both tutorials on Datomic mentioned in the [previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}), section "References", this PR wouldn't demand any further explanation.
 
 In that PR, the part that, in my opinion, does require explanation is setup related with REPL, exposed in the following section.
 
 ---
 ## Default Namespace on REPL Startup ##
 
-The default namespace Clojure REPLs target on startup is `user`. So, a common practice in RDD is implementing it explicitly in `dev` environment, as to avoid including it with the rest of our application when we package and deploy it.
+The default namespace Clojure REPLs target on startup is `user`. So, a common practice in RDD is implementing it explicitly in `dev` environment, as to avoid including it with the rest of our application when we build and deploy it.
 
 To do so, we:
-1. in `deps.edn` file, `:aliases` section, we set `dev` alias, and within it, `:extra-paths ["dev"]`
-2. in the project's root directory, we create a `.dir-locals.el` Emacs project config file with the following contents: press `C-x d` to open Dired, navigate to the project's root directory and once there, press `C-x C-f`to create a file named `.dir-locals.el`, and copy the following lines into it:
+1. set `dev` alias in `deps.edn` file, `:aliases` section, and within it, `:extra-paths ["dev"]`
+2. create a `.dir-locals.el` Emacs project config file in the project's root directory with the following contents:
 
 ```elisp
 ((nil
   (cider-clojure-cli-global-options . "-A:dev")))
 ```
 
+To do so, press `C-x d` to open Dired, navigate to the project's root directory and once there, press `C-x C-f` to create a file named `.dir-locals.el`, and copy the config just shown into it.
+
 ---
 ## State Management ##
 
-State managed by this PR are:
+State managed by this PR is:
 
-* Datomic connection, and handled in `src/accounts/db/conn.clj`:
+* **Datomic connection**: handled in `src/accounts/db/conn.clj`
 
 ```clojure
 (defstate conn :start (new-connection config)
                :stop (disconnect config conn))
 ```
 
-* Configs loaded from EDN files in `resources` directory in `src/accounts.conf.clj`:
+* **Configs**: loaded from EDN files in `resources` directory in `src/accounts/conf.clj`
 
 ```clojure
 (ns accounts.conf
@@ -136,16 +138,16 @@ Coded in the following PRs, involving almost exclusively Pedestal interceptors i
 
 As suggested in Pedestal documentation, we embraced interceptors as much as possible, and organized them as shown below:
 
-1. **validate** HTTP request parameters
+1. **validate** HTTP `request` parameters
 2. **retrieve** data from database
 3. **update** data into database
-2. **prepare** (**retrieve** or **update**) data for each of these operations respectively
-4. **display** data in response as the result of the interceptor chain execution
+2. **prepare** (**retrieve** or **update**) data for each of the corresponding operations just mentioned
+4. **display** data in `response` as the result of the interceptor chain execution
 
-To handle data, making it flow step by step along the interceptor chain bound to this endpoint, we have to device a data structure to store data in, or take data from, the following way:
+To handle data, making it flow step by step along the interceptor chain bound to every endpoint, we have to device a data structure to store data in, or take it from, the following way:
 
-1. `:request`: this is the data which comes with the HTTP GET request, that is bound to this key in the interceptor chain's Pedestal context
-2. `:query-data`: `prepare-retrieve` interceptors bind data to this key leaving it prepared for `retrieve` interceptors
+1. `:request`: this is the data which comes with the HTTP `GET request`, that is bound to this key in the interceptor chain's Pedestal context
+2. `:query-data`: `prepare-retrieve` interceptors bind data to this key, leaving it prepared for `retrieve` interceptors
 3. `:retrieved`: `retrieve` interceptors store retrieved data here
 4. `:result`: `display` interceptors store data here in order to have it ready for the `entity-render` interceptor to set it in `response`
 
@@ -163,9 +165,7 @@ This data structure might be built by the end of the execution of the intercepto
 ---
 ## End-to-end Testing ##
 
-Here, we will stay in the same branch we switched to in the previous sextion on "Unit Tests", `account-detail-e2e-testing`.
-
-So, let's switch the REPL back to our `user` namespace: being in the REPL, press `C-c M-n` and type `user`; it can be auto-completed by just typing the first characters.
+Let's switch to the branch corresponding to the [last PR](https://github.com/promesante/accounts-api/pull/5) for this endpoint: `account-detail-e2e-testing`.
 
 This e2e testing session will begin and end in exactly the same way as our previous one on the last interceptor set, branch `account-detail-db`.
 

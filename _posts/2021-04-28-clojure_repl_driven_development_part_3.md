@@ -8,11 +8,11 @@ author:     "Promesante"
 background: "/img/posts/20.jpg"
 ---
 
-This is the **main part of the whole series**: an actual **RDD session demo**. It involves a subset of [account detail - web: validate interceptor set PR](https://github.com/promesante/accounts-api/pull/3/files) as it represents a good example of an RDD session, as:
-1. it doesn't involve too much setup and boilerplate: most of it has already been implemented in the [previous PR](https://github.com/promesante/accounts-api/pull/2/files). As RDD is basically a workflow in which the developer builds the application in an interactive relation with the REPL by means of her REPL-friendly IDE (in our case, Emacs), while setup and boilerplate somehow block that flow.
+This is the **main part of the whole series**: an actual **RDD session demo**. It involves a subset of [account detail - web: validate interceptor set PR](https://github.com/promesante/accounts-api/pull/3/files) as it represents a good example of an RDD session, because:
+1. it doesn't involve too much setup and boilerplate: most of it has already been implemented in the [previous PR](https://github.com/promesante/accounts-api/pull/2/files). As RDD is basically a workflow in which the developer builds the application in an interactive relation with the REPL by means of her REPL-friendly IDE (in our case, Emacs), while setup and boilerplate somehow block that flow
 2. it is not too large but, at the same time, large enough to be meaningful
-3. in contrast with the [previous PR](https://github.com/promesante/accounts-api/pull/2/files), which involves basically code related with the database and, hence, mainly stateful, this PR involves basically Pedestal interceptors which, on the other hand, are basically pure functions, and thus very easy to be unit tested. So, in this RDD session, we will be able to include implementation and execution of those unit test cases as well
-4. regarding RDD, subsequent endpoints implementation will be basically the same. So, with exactly the same Emacs shortcuts we are about to expose, it might be an excellent exercise for the interested reader to reproduce in Emacs and REPL API construction along this project's [PR sequence](https://github.com/promesante/accounts-api/pulls?q=is%3Apr+is%3Aclosed).
+3. in contrast with the [previous PR](https://github.com/promesante/accounts-api/pull/2/files), which involves basically code related with the database and, hence, mainly stateful, this PR involves basically Pedestal interceptors, which are basically pure functions, and thus very easy to be unit tested. So, in this RDD session, we will be able to include implementation and execution of those unit test cases as well
+4. regarding RDD, subsequent endpoints implementation will be basically the same. So, with exactly the same Emacs shortcuts we are about to expose, it might be an excellent exercise for the interested reader to reproduce in Emacs and REPL the API construction explained in the rest of this post series, along this project's [PR sequence](https://github.com/promesante/accounts-api/pulls?q=is%3Apr+is%3Aclosed)
 
 ---
 # Emacs Installation and Setup #
@@ -26,7 +26,7 @@ Regarding its setup, I share my config [here](https://github.com/promesante/.ema
 ---
 # Implementation #
 
-Please take into account implementation we will code in this RDD session will be slightly different from the one you'll find out in the PRs: we will skip some parts in order to keep focus on RDD flow. And we will include some improvements which will be added in subsequent PRs.
+Please take into account implementation we will code in this RDD session will be slightly different from the one you'll find out in the PR it is a subset of: [account detail - web: validate interceptor set PR](https://github.com/promesante/accounts-api/pull/3/files). We will skip some parts in order to keep focus on RDD flow. And we will include some improvements which will be added in subsequent PRs.
 
 First, let's switch to the branch `account-detail-db`, the one corresponding to the [previos PR](https://github.com/promesante/accounts-api/pull/2) and, from it, create a new branch, somehow duplicated with `account-detail-web`, the one corresponding to [next PR](https://github.com/promesante/accounts-api/pull/3/files). Let's call it the same way, but with a differentiating suffix: `account-detail-web-rdd-demo`.
 
@@ -52,7 +52,7 @@ First, let's add Pedestal dependencies into `deps.edn`:
 }
 ```
 
-Then, in `src/accounts` directory, create `web/interceptors` nested directories, and `validate.clj` file there by means of "visit new file" shortcut: `C-x C-f`, and name the new file as `web/interceptors/validate.clj`. New buffer for new file gets opened. Then save the file with `C-x C-s`: as Emacs asks `"src/accounts/web does not exist; create? (y or n)"`, type `y` and press `Enter`, and file as well as nested directories are created.
+Then, in `src/accounts` directory, create `web/interceptors` nested directories, and `validate.clj` file there by means of "visit new file" Emacs shortcut: `C-x C-f`, and name the new file as `web/interceptors/validate.clj`. New buffer for new file gets opened. Then save the file with `C-x C-s`: as Emacs asks `"src/accounts/web does not exist; create? (y or n)"`, type `y` and press `Enter`, and file as well as nested directories are created.
 
 In the new file,  press `C-c C-r n i` to get Clojure namespace added. Then let's add there a Pedestal interceptor to validate whether account's id is actually set in the route's path as path parameter:
 

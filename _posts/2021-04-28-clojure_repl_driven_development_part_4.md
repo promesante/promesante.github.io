@@ -8,7 +8,7 @@ author:     "Promesante"
 background: "/img/posts/18.jpg"
 ---
 
-Going on implementing our toy digital bank, as an attempt to get first hand experience in Clojure REPL driven development (RDD), we will now tackle its next endpoint: **transaction list**.
+Going on implementing our toy digital bank, as an attempt to get first hand experience in Clojure REPL driven development (RDD), we will now tackle its next endpoint in our implementation strategy: **transaction list**.
 
 It is covered in the following PRs:
 
@@ -18,12 +18,12 @@ It is covered in the following PRs:
 	* [display interceptor](https://github.com/promesante/accounts-api/pull/8/files)
 	* [end-to-end testing](https://github.com/promesante/accounts-api/pull/9/files)
 
-It is quite similar to the previous one: **account view**. The only relevant differences are some details in the data structure we device to handle data along each endpoint's interceptor chain and introduced in [previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_2 %}) in this series.
+It is quite similar to the previous one: **account view**. The only relevant differences are some details in the data structure we device to handle data along each endpoint's interceptor chain and introduced in [part 2]({% post_url 2021-04-28-clojure_repl_driven_development_part_2 %}) of this series.
 
 ---
 # Interceptors #
 
-Regarding interceptor data structure depicted in the previous endpoint, the following one is an example, built by this endpoint's interceptor chain. It is basically the same as the one shown it the previous endpoint. The only difference is the key inside `:retrieved` data got from the database is bound to:` :txs`.
+Regarding interceptor data structure depicted in [part 2]({% post_url 2021-04-28-clojure_repl_driven_development_part_2 %}), the following one is an example, built by this endpoint's interceptor chain. It is basically the same as the one shown in [part 2]({% post_url 2021-04-28-clojure_repl_driven_development_part_2 %}). The only difference is the key inside `:retrieved` data got from the database is bound to:` :txs`.
 
 ```clojure
   {:request {:path-params {:account-id "account-1"}}
@@ -69,8 +69,8 @@ Regarding interceptor data structure depicted in the previous endpoint, the foll
 # End-to-end Testing #
 
 Let's switch to the branch corresponding to the [last PR](https://github.com/promesante/accounts-api/pull/9) for this endpoint: `transaction-list-e2e-testing`. We show below the session for e2e testing for this endpoint:
-1. first, we run the Datomic query
-2. and then we invoke the endpoint, by means of `response-for` function from `io.pedestal.test` namespace, wrapped in our own util function, `test-request` and then wrapped again in `transaction-list`
+1. running the Datomic query
+2. invoking the endpoint, by means of `response-for` function from `io.pedestal.test` namespace, wrapped in our own util function, `test-request` and then wrapped in turn in `transaction-list`
 
 It is basically the same as for the previous endpoint.
 

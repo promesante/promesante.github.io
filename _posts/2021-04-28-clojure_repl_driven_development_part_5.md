@@ -8,7 +8,7 @@ author:     "Promesante"
 background: "/img/posts/11.jpg"
 ---
 
-Going on implementing our toy digital bank, as an attempt to get first hand experience in Clojure REPL driven development (RDD), we will now tackle its last endpoint: **transaction create**.
+Going on implementing our toy digital bank, as an attempt to **get first hand experience in Clojure REPL driven development (RDD)**, we will now tackle its last endpoint: **transaction create**.
 
 It is handled by means of an HTTP POST. We deviced its JSON body structure according to transaction type. In all of them, amount must be a `double`.
 
@@ -46,10 +46,10 @@ Examples:
 }
 ```
 Although in this body there is no explicit indication on transation type, each of them can be distinguished by the following criteria:
-* if `:account` attribute is present, transaction is a transfer; otherwise, it is a deposit or withdrawal
-* single difference between deposit and withdrawal takes place just in ist amount sign: positive for deposits, and viceversa
+* if `:account` attribute is present, transaction is a `transfer`; otherwise, it is a `deposit` or `withdrawal`
+* single difference between `deposit` and `withdrawal` takes place just in its `amount` sign: positive for `deposits`, and viceversa
 
-Transfer transactions are basically splitted into a deposit into the target account, and a withdrawal from the source one.
+`transfer` transactions are basically splitted into a `deposit` into the target account, and a `withdrawal` from the source one.
 
 To actually handle each of these transactions, several interceptors has two versions, carrying the following sufixes, usually delegating its actual implementation into a common function, with `type` as the identifying parameter:
 * **credit**: when money is put into an account
@@ -86,7 +86,7 @@ We will now explain interceptors bound to this endpoint. As it has associated  m
 ---
 ### Validation ###
 
-We may group them the follwing way:
+We may group them the following way:
 
 * [validating HTTP request params](https://github.com/promesante/accounts-api/pull/11/files): as this endpoint is the first HTTP POST, this validation interceptors target its request JSON body
 * [retrieving accounts for its validation](https://github.com/promesante/accounts-api/pull/12)
