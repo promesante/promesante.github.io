@@ -61,21 +61,19 @@ In contrast with that mount example, this post:
 ---
 # Endpoints #
 
-We will implement de following ones:
+We will implement the following ones:
 
 1. **account view**, `GET /accounts/:account-id`: details of the single account with the `account-id` set
 2. **transaction list**, `GET /accounts/:account-id/transactions`: list of transactions already performed on the account with the `account-id` set
 3. **transaction create**, `POST /accounts/:account-id`: creating (executing) a transaction on the account with the `account-id` set;
 
+---
+## Transactions ##
+
 We will implement de following transactions:
 
-1. **deposit**: positive `amount`, no `account` (attribute exclusive for transfers)
-1. **withdrawal**: negative `amount`
-1. **transfer**: negative `amount`, setting target account's id in `account`
-
-Examples:
-
-Deposit:
+---
+### Deposit ###
 
 ```json
 {
@@ -84,7 +82,10 @@ Deposit:
 }
 ```
 
-Withdrawal:
+Positive `amount`, no `account` (attribute exclusive for `transfers`)
+
+---
+### Withdrawal ###
 
 ```json
 {
@@ -93,7 +94,10 @@ Withdrawal:
 }
 ```
 
-Transfer:
+Negative `amount`
+
+---
+### Transfer ###
 
 ```json
 {
@@ -102,6 +106,8 @@ Transfer:
   "description": "appartment rent - march 2021"
 }
 ```
+
+Negative `amount`, setting target account's id in `account`
 
 ---
 # Application Structure #
@@ -160,7 +166,7 @@ We are thus ready to begin coding.
 ---
 # References #
 
-We will take as reference the following articles. Each of them has been an excellent tutorial for me, for its corresponding tool below. So, if you don't have experience in any of them, I'd suggest to read them before going on with this series, as it assumes that level of understanding about each:
+We will take as reference the following articles:
 
 * **Emacs Setup**: [My Optimal GNU Emacs Settings for Developing Clojure (Revised)](http://fgiasson.com/blog/index.php/2016/06/14/my-optimal-gnu-emacs-settings-for-developing-clojure-revised/)
 * **Mount**: [project README](https://github.com/tolitius/mount#mount-and-develop)
@@ -170,6 +176,8 @@ We will take as reference the following articles. Each of them has been an excel
 * **Datomic**: 
     * [Datomic Official Tutorial](https://docs.datomic.com/on-prem/tutorial/introduction.html)
 	* [Datomic Missing Link Tutorial](https://github.com/ftravers/datomic-tutorial)
+
+Each of them has been an excellent tutorial for me, for its corresponding tool above. Hence, if you don't have experience in any of them, I'd suggest to read them before going on with this series, as we assume that level of understanding about each.
 
 ---
 # Next Step #

@@ -12,13 +12,15 @@ Going on implementing our toy digital bank, as an attempt to **get first hand ex
 
 It is handled by means of an HTTP POST. We deviced its JSON body structure according to transaction type. In all of them, amount must be a `double`.
 
-1. **deposit**: positive `amount`, no `account` (attribute exclusive for transfers)
-1. **withdrawal**: negative `amount`
-1. **transfer**: negative `amount`, setting target account's id in `account`
+---
+# Transactions #
 
-Examples:
+We will implement de following transactions:
 
-**Deposit**
+---
+## Deposit ##
+
+Positive `amount`, no `account` (attribute exclusive for `transfers`)
 
 ```json
 {
@@ -27,7 +29,10 @@ Examples:
 }
 ```
 
-**Withdrawal**
+---
+## Withdrawal ##
+
+Negative `amount`
 
 ```json
 {
@@ -36,7 +41,10 @@ Examples:
 }
 ```
 
-**Transfer**
+---
+## Transfer ##
+
+Negative `amount`, setting target account's id in `account`
 
 ```json
 {
@@ -45,6 +53,7 @@ Examples:
   "description": "appartment rent - march 2021"
 }
 ```
+
 Although in this body there is no explicit indication on transation type, each of them can be distinguished by the following criteria:
 * if `:account` attribute is present, transaction is a `transfer`; otherwise, it is a `deposit` or `withdrawal`
 * single difference between `deposit` and `withdrawal` takes place just in its `amount` sign: positive for `deposits`, and viceversa
@@ -52,8 +61,8 @@ Although in this body there is no explicit indication on transation type, each o
 `transfer` transactions are basically splitted into a `deposit` into the target account, and a `withdrawal` from the source one.
 
 To actually handle each of these transactions, several interceptors has two versions, carrying the following sufixes, usually delegating its actual implementation into a common function, with `type` as the identifying parameter:
-* **credit**: when money is put into an account
-* **debit**: when it is taken from it
+* `credit`: when money is put into an account
+* `debit`: when it is taken from it
 
 ---
 # Web #
