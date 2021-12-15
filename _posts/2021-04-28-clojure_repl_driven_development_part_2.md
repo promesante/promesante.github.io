@@ -8,7 +8,7 @@ author:     "Promesante"
 background: "/img/posts/14.jpg"
 ---
 
-[Previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}) of this series left us ready to begin actual implementation of our toy digital bank, as an attempt to **get first hand experience in Clojure REPL driven development (RDD)**, tackling the first endpoint in our implementation strategy: **account view**.
+[Previous part]({% post_url 2021-04-28-clojure_repl_driven_development_part_1 %}) of this series left us ready to begin actual implementation of our toy digital bank, as an attempt to **get hands-on experience in Clojure REPL driven development (RDD)**, tackling the first endpoint in our implementation strategy: **account view**.
 
 ---
 # Database #

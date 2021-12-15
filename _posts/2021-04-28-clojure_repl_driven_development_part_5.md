@@ -8,7 +8,7 @@ author:     "Promesante"
 background: "/img/posts/11.jpg"
 ---
 
-Going on implementing our toy digital bank, as an attempt to **get first hand experience in Clojure REPL driven development (RDD)**, we will now tackle its last endpoint: **transaction create**.
+Going on implementing our toy digital bank, as an attempt to **get hands-on experience in Clojure REPL driven development (RDD)**, we will now tackle its last endpoint: **transaction create**.
 
 It is handled by means of an HTTP POST. We deviced its JSON body structure according to transaction type. In all of them, amount must be a `double`.
 

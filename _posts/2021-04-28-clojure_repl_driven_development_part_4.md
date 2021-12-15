@@ -8,7 +8,7 @@ author:     "Promesante"
 background: "/img/posts/18.jpg"
 ---
 
-Going on implementing our toy digital bank, as an attempt to get first hand experience in Clojure REPL driven development (RDD), we will now tackle its next endpoint in our implementation strategy: **transaction list**.
+Going on implementing our toy digital bank, as an attempt to get hands-on experience in Clojure REPL driven development (RDD), we will now tackle its next endpoint in our implementation strategy: **transaction list**.
 
 It is covered in the following PRs:
 

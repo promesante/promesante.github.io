@@ -27,7 +27,7 @@ Among them, we will take as reference [Clojure Rationale](https://clojure.org/ab
 
 The best way to realize the power of this synergy is actually putting those features into practice. And precisely that is actually the purpose of this post series:
 
-**Getting first hand experience in Clojure REPL driven development (RDD)**
+**Getting hands-on experience in Clojure REPL driven development (RDD)**
 
 ---
 # Reloaded Workflow #
@@ -43,7 +43,7 @@ The most widely adopted state managers / reloaded workflows in Clojure ecosystem
 * [integrant](https://github.com/weavejester/integrant) / [integrant-rep](https://github.com/weavejester/integrant-repl)
 * [mount](https://github.com/tolitius/mount)
 
-One of the best articles I happened to read on RDD, and on reloaded workflows in particular, is the [Guide to the Duct Framework](https://github.com/duct-framework/docs/blob/master/GUIDE.rst), which shows a demo of a reloaded workflow in a strictly practical fashion, building a REST API from the ground up, and showing step-by-step the whole path. This approach is particularly illuminating for getting a first hand experience in RDD.
+One of the best articles I happened to read on RDD, and on reloaded workflows in particular, is the [Guide to the Duct Framework](https://github.com/duct-framework/docs/blob/master/GUIDE.rst), which shows a demo of a reloaded workflow in a strictly practical fashion, building a REST API from the ground up, and showing step-by-step the whole path. This approach is particularly illuminating for getting hands-on experience in RDD.
 
 A project I've worked on was based on [Luminus](https://luminusweb.com/), a well known project template in the Clojure ecosystem, which tidily packages and integrates a vast set of tools widely adopted in the Clojure ecosystem. As its state manager, Luminus chose mount, and from then on I have adopted it as well.
 
@@ -135,7 +135,7 @@ The aspects exposed in the previous two sections, **Endpoints**, and **Applicati
 	2. web
 	3. end-to-end testing
 
-Among these parts of the series, the most **important** one is [part 3]({% post_url 2021-04-28-clojure_repl_driven_development_part_3 %}), **1.4, RDD session demo**, as it actually fulfills the most the whole series goal: **getting first hand experience in Clojure REPL driven development (RDD)**.
+Among these parts of the series, the most **important** one is [part 3]({% post_url 2021-04-28-clojure_repl_driven_development_part_3 %}), **1.4, RDD session demo**, as it actually fulfills the most the whole series goal: **getting hands-on experience in Clojure REPL driven development (RDD)**.
 
 But before beginning those steps, let's tackle initial project setup which, due to its very own nature, is not reflected in any PR.
 
