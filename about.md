@@ -13,26 +13,36 @@ I am Industrial Engineer and hold an MBA. But my career, and actual interests de
 
 I have always been very fond of intellectual exploration. Quite wide during my infancy and adolescence: Popular Science, Religion, History, Philosophy... And then, narrower and narrower. As I entered into the Computer Science realm, I've followed the same path: intellectual exploration. Naturally, again, wide at the beginning, and then narrower and narrower, gradually converging into the subjects listed below, and getting as practical, and hopefully useful, as to begin sharing findings here.
 
-This passion for intellectual exploration is the reason why I've chosen this blog's motto:
+This passion for intellectual exploration is the reason why I've chosen this blog's motto, taken it from one of my favorite songs which, in turn, this blog takes its name after:
 
 > "Andando y andando, me vine hasta aquí"...
+>
 > ("Wandering and wandering, I've got here")
-
-I've taken it from one of my favorite songs which, in turn, this blog takes its name after:
-
+>
 > [El Promesante](https://www.youtube.com/watch?v=NeRb39bObgM&t=41m11s), by [Atahualpa Yupanqui](https://en.wikipedia.org/wiki/Atahualpa_Yupanqui)
 
 
 # Interests
 
-* Functional Programming Paradigm
-* Meta-programming
+Mainly, the following subjects:
 
-The common denominator is Lisp programming language, as it approaches natively both those broad subjects. Actually, Lisp, rather than a single programming language, is a large, diverse family of dialects. Among them, for the reasons explained below, I am particularly interested in the following ones:
+1. (Typed) Functional Programming Paradigm
+2. Category Theory
+3. Type Driven Development and Dependent Types
+4. Formal Verification
+5. Meta-programming
+6. Language Oriented Programming
 
-* [Clojure](http://clojure.org)
-* [Racket](http://racket-lang.org)
+And these combinations:
 
+1. **Typed Functional Programming Paradigm** with **Category Theory**, involving fundamentally [Haskell](https://www.haskell.org/) programming language
+2. **Typed Functional Programming Paradigm**, **Type Driven Development**, **Dependent Types**  and **Formal Verification**, involving [Idris](https://www.idris-lang.org/) and [Agda](https://wiki.portal.chalmers.se/agda/pmwiki.php) programming languages
+3. **Functional Programming Paradigm** and **Meta-programming**, involving Lisp programming language, mainly [Clojure](http://clojure.org) and [Racket](http://racket-lang.org) Lisp dialects
+4. **Language Oriented Programming**, **Type Driven Development**, **Dependent Types** and **Formal Verification**, involving [Idris 2](https://github.com/idris-lang/Idris2)'s implementation on [Chez Scheme](https://cisco.github.io/ChezScheme/) and [Racket](https://racket-lang.org/) Lisp dialects, enriched by the concepts explained in:
+   1. [Programming Languages: Application and Interpretation](https://cs.brown.edu/~sk/Publications/Books/ProgLangs/2007-04-26/)
+   2. [The Little Typer](https://www.amazon.com/Little-Typer-MIT-Press/dp/0262536439/ref=sr_1_1?crid=2UK6RGD2KTKML&keywords=the+little+typer&qid=1645744989&s=books&sprefix=the+little+typer%2Cstripbooks-intl-ship%2C251&sr=1-1)
+   3. [The Little Prover](https://www.amazon.com/Little-Prover-MIT-Press/dp/0262527952/ref=sr_1_2?crid=2UK6RGD2KTKML&keywords=the+little+typer&qid=1645744989&s=books&sprefix=the+little+typer%2Cstripbooks-intl-ship%2C251&sr=1-2)
+   4. [Hackett](https://github.com/lexi-lambda/hackett) programming language
 
 # Approach
 
@@ -45,68 +55,6 @@ My goal is to build core competencies based on these  broad interests. But not a
 Hence, I am setting this blog as a means for these goals.
 
 A detailed list of these interests is shown in the following sections. They will be kept up-to-date, reflecting its permantent changes and evolution.
-
-
-# Functional Programming Paradigm
-
-In this subject, I am particularly interested in its application to the field of Concurrency and Distributed Computing. And here, [Clojure's](http://clojure.org) concurrency primitives come to the rescue ! And so, I am exploring its application to the following domains:
-
-
-## Schedulers
-
-AKA cluster managers or resource managers:
-
-* [Apache Mesos](http://mesos.apache.org/)
-* [Mesosphere Marathon](https://mesosphere.github.io/marathon/)
-* [Apache Chronos](https://mesos.github.io/chronos/)
-* [Hashicorp Nomad](https://www.nomadproject.io/)
-* [Firmament](http://www.firmament.io/)
-
-
-## Big Data
-
-* [Apache Spark](http://spark.apache.org/)
-* [Apache Storm](http://storm.apache.org/)
-* [Onyx](http://www.onyxplatform.org/)
-
-
-## Games
-
-Multiplayer online games (MOGs): [Racket HTDP Universe](https://www.realmofracket.com/)
-
-
-# Meta-programming
-
-In this subject, I am particulary interested in language development. More specifically: Domain Specific Languages (DSLs). And here, language-development facilities natively supplied by the [Racket programming language](http://racket-lang.org) comes to the rescue ! And so, I am exploring its application to the following domains:
-
-
-## Big Data
-
-In this field, I am interested in Probabilistic Programming Languages; more specifically:
-
-* [Church](https://probmods.org/)
-* [Anglican](http://www.robots.ox.ac.uk/~fwood/anglican/)
-
-
-## Games
-
-In this field, I am interested in:
-
-**Engines**
-
-* [Racket HTDP Big Bang](https://www.realmofracket.com/)
-* [play-clj](https://github.com/oakes/play-clj)
-
-
-**Artificial Intelligence**: [Paradigms of Artificial Intelligence Programming (PAIP)](http://www.amazon.com/Paradigms-Artificial-Intelligence-Programming-Studies/dp/1558601910)
-
-
-## Publishing and static site generators
-
-* [Pollen](http://docs.racket-lang.org/pollen/)
-* [Frog](https://github.com/greghendershott/frog)
-* [Cryogen](http://cryogenweb.org/)
-* [Jekyll](https://jekyllrb.com/)
 
 
 # Conclusion
