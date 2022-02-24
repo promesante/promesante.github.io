@@ -22,6 +22,7 @@ This passion for intellectual exploration is the reason why I've chosen this blo
 > [El Promesante](https://www.youtube.com/watch?v=NeRb39bObgM&t=41m11s), by [Atahualpa Yupanqui](https://en.wikipedia.org/wiki/Atahualpa_Yupanqui)
 
 
+---
 # Interests
 
 Mainly, the following subjects:
@@ -44,6 +45,8 @@ And these combinations:
    3. [The Little Prover](https://www.amazon.com/Little-Prover-MIT-Press/dp/0262527952/ref=sr_1_2?crid=2UK6RGD2KTKML&keywords=the+little+typer&qid=1645744989&s=books&sprefix=the+little+typer%2Cstripbooks-intl-ship%2C251&sr=1-2)
    4. [Hackett](https://github.com/lexi-lambda/hackett) programming language
 
+
+---
 # Approach
 
 My goal is to build core competencies based on these  broad interests. But not alone: I'd rather do it collaboratively with people with complementary interests and skills, and hopefully team up with them to build nice, useful pieces of software:
@@ -57,6 +60,7 @@ Hence, I am setting this blog as a means for these goals.
 A detailed list of these interests is shown in the following sections. They will be kept up-to-date, reflecting its permantent changes and evolution.
 
 
+---
 # Conclusion
 
 I know these interests are perhaps too wide and disperse. However, I have always tried to keep balance between their unity and diversity, in order to get synergy from their combination. Of cource, I don't plan to either get hands-on experience or publish posts on all of them. But what I actually do about them all is studying, and permanently evaluating which one to invest time and effort on, getting the hands gradually dirty on the most promising ones, at least from my point of view...
